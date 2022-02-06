@@ -14,5 +14,6 @@ var darkTheme = ThemeData(
     headline1: TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold),
     headline2: TextStyle(fontSize: 28.0),
     bodyText1: TextStyle(fontSize: 18.0),
+    bodyText2: TextStyle(fontSize: 14.0),
   ),
 );

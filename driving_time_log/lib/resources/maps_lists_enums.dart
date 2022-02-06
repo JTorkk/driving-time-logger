@@ -21,7 +21,7 @@ List<String> iconNames = [
 ];
 
 //enums
-enum Icons {
+enum IconsAndNames {
   driving,
   otherWork,
   service,

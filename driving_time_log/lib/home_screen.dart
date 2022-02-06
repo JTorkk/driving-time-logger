@@ -1,3 +1,4 @@
+import 'package:driving_time_log/resources/colors.dart';
 import 'package:flutter/material.dart';
 
 import 'archive_screen.dart';
@@ -32,8 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
         children: _widgetOptions,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        // showSelectedLabels: false,
-        // showUnselectedLabels: false,
         selectedFontSize: 14,
         unselectedFontSize: 14,
         iconSize: 30,
@@ -48,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue[600],
+        selectedItemColor: accentblue,
         onTap: _onItemTapped,
       ),
     );

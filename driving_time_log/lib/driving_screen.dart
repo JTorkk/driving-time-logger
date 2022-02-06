@@ -2,6 +2,8 @@ import 'package:driving_time_log/resources/assets.dart';
 import 'package:driving_time_log/resources/colors.dart';
 import 'package:driving_time_log/resources/maps_lists_enums.dart';
 import 'package:driving_time_log/resources/widgets/button_with_icon.dart';
+import 'package:driving_time_log/resources/widgets/current_days_logs.dart';
+import 'package:driving_time_log/resources/widgets/edit_details_dialog.dart';
 import 'package:driving_time_log/resources/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 
@@ -25,8 +27,10 @@ class DrivingScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  //TODO: only one button can be choosen at time if one is choosen and other one is pressed
+                  //it will create new log event
                   ButtonWithIcon(
-                    text: 'out',
+                    text: 'Out',
                     color: cyan,
                     icon: out,
                     onTap: () {
@@ -34,7 +38,7 @@ class DrivingScreen extends StatelessWidget {
                     },
                   ),
                   ButtonWithIcon(
-                    text: 'break',
+                    text: 'Break',
                     color: orange,
                     icon: sleepAndBreak,
                     onTap: () {
@@ -50,7 +54,7 @@ class DrivingScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ButtonWithIcon(
-                    text: 'service',
+                    text: 'Service',
                     color: red,
                     icon: service,
                     onTap: () {
@@ -58,7 +62,7 @@ class DrivingScreen extends StatelessWidget {
                     },
                   ),
                   ButtonWithIcon(
-                    text: 'other',
+                    text: 'Other',
                     color: blue,
                     icon: otherWork,
                     onTap: () {
@@ -71,7 +75,7 @@ class DrivingScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: ButtonWithIcon(
-                text: 'driving',
+                text: 'Driving',
                 color: green,
                 icon: driving,
                 center: true,
@@ -89,42 +93,28 @@ class DrivingScreen extends StatelessWidget {
                   "Today's logs:",
                   style: theme.headline2,
                 ),
-                //TODO: add button to add new log
-                //button here
-              ],
-            ),
-            const SizedBox(height: 10),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 20,
-                itemBuilder: (context, position) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(vertical: 4),
+                GestureDetector(
+                  onTap: () {
+                    detailsDialog(context: context);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
                     decoration: const BoxDecoration(
-                      color: accent,
+                      color: accentblue,
                       borderRadius: BorderRadius.all(
                         Radius.circular(15),
                       ),
                     ),
-                    child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              position.toString(),
-                              style: theme.bodyText1,
-                            ),
-                            SvgIcon(
-                              assetName: driving,
-                              size: 40,
-                              color: iconColors['driving'],
-                            )
-                          ],
-                        )),
-                  );
-                },
-              ),
+                    child: Text(
+                      'Add +',
+                      style: theme.bodyText1,
+                    ),
+                  ),
+                ),
+              ],
             ),
+            const SizedBox(height: 10),
+            const CurrentDayLogs(),
           ],
         ),
       ),
