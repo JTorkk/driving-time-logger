@@ -12,7 +12,7 @@ var darkTheme = ThemeData(
   // text styling for headlines, titles, bodies of text, and more.
   textTheme: const TextTheme(
     headline1: TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold),
-    headline2: TextStyle(fontSize: 28.0, fontStyle: FontStyle.italic),
+    headline2: TextStyle(fontSize: 28.0),
     bodyText1: TextStyle(fontSize: 18.0),
   ),
 );
