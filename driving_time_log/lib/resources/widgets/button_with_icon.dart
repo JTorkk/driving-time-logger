@@ -9,6 +9,7 @@ class ButtonWithIcon extends StatelessWidget {
   final Function()? onTap;
   final bool center;
   final bool selected;
+  final bool enabled;
 
   const ButtonWithIcon({
     Key? key,
@@ -18,13 +19,14 @@ class ButtonWithIcon extends StatelessWidget {
     this.onTap,
     this.center = false,
     this.selected = false,
+    this.enabled = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context).textTheme;
     return GestureDetector(
-      onTap: onTap,
+      onTap: enabled ? onTap : null,
       child: Container(
         constraints: const BoxConstraints(
           minWidth: 150.0,

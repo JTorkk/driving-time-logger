@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 class CurrentDayLogs extends StatelessWidget {
   //TODO: Take day as parameter and search for the logs of that day
+  //TODO: think about does this need cubit
   const CurrentDayLogs({Key? key}) : super(key: key);
 
   @override

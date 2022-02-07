@@ -8,6 +8,7 @@ Future<dynamic> detailsDialog({
   required BuildContext context,
   //TODO always needs date as parameter
   //TODO: take the info as parameters if everything except date is date -> make new log point
+  //TODO: cubuit stuff needs to be added
 }) {
   return showDialog(
     context: context,
@@ -242,6 +243,7 @@ Future<dynamic> detailsDialog({
                 ],
               ),
             ),
+            //TODO: add remove log button here
           ],
         ),
       );
