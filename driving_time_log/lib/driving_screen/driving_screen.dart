@@ -32,8 +32,6 @@ class DrivingScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        //TODO: only one button can be choosen at time if one is choosen and other one is pressed
-                        //it will create new log event
                         ButtonWithIcon(
                           text: 'Out',
                           color: cyan,
@@ -42,7 +40,7 @@ class DrivingScreen extends StatelessWidget {
                           enabled: !(state.enabledIcon == IconsAndNames.out),
                           onTap: () {
                             context.read<DrivingCubit>().setEnabledButton(button: IconsAndNames.out);
-                            print('out');
+                            context.read<DrivingCubit>().buttonPressed(button: IconsAndNames.out);
                           },
                         ),
                         ButtonWithIcon(
@@ -53,8 +51,7 @@ class DrivingScreen extends StatelessWidget {
                           enabled: !(state.enabledIcon == IconsAndNames.sleepAndBreak),
                           onTap: () {
                             context.read<DrivingCubit>().setEnabledButton(button: IconsAndNames.sleepAndBreak);
-
-                            print('break');
+                            context.read<DrivingCubit>().buttonPressed(button: IconsAndNames.sleepAndBreak);
                           },
                         ),
                       ],
@@ -73,8 +70,7 @@ class DrivingScreen extends StatelessWidget {
                           enabled: !(state.enabledIcon == IconsAndNames.service),
                           onTap: () {
                             context.read<DrivingCubit>().setEnabledButton(button: IconsAndNames.service);
-
-                            print('service');
+                            context.read<DrivingCubit>().buttonPressed(button: IconsAndNames.service);
                           },
                         ),
                         ButtonWithIcon(
@@ -85,8 +81,7 @@ class DrivingScreen extends StatelessWidget {
                           enabled: !(state.enabledIcon == IconsAndNames.otherWork),
                           onTap: () {
                             context.read<DrivingCubit>().setEnabledButton(button: IconsAndNames.otherWork);
-
-                            print('other');
+                            context.read<DrivingCubit>().buttonPressed(button: IconsAndNames.otherWork);
                           },
                         ),
                       ],
@@ -103,8 +98,7 @@ class DrivingScreen extends StatelessWidget {
                       enabled: !(state.enabledIcon == IconsAndNames.driving),
                       onTap: () {
                         context.read<DrivingCubit>().setEnabledButton(button: IconsAndNames.driving);
-
-                        print('driving');
+                        context.read<DrivingCubit>().buttonPressed(button: IconsAndNames.driving);
                       },
                     ),
                   ),

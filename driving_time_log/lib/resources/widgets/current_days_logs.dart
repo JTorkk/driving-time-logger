@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 class CurrentDayLogs extends StatelessWidget {
   //TODO: Take day as parameter and search for the logs of that day
   //TODO: think about does this need cubit
+  //TODO: listen databse chages always
+
   const CurrentDayLogs({Key? key}) : super(key: key);
 
   @override
@@ -15,6 +17,7 @@ class CurrentDayLogs extends StatelessWidget {
     return Expanded(
       //TODO: move the list so that the bottomest one is the newest and all the older are above
       child: ListView.builder(
+        //TODO: list of object lenght
         itemCount: 10,
         itemBuilder: (context, position) {
           var theme = Theme.of(context).textTheme;

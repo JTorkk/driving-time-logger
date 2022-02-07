@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 
 Future<dynamic> detailsDialog({
   required BuildContext context,
-  //TODO always needs date as parameter
-  //TODO: take the info as parameters if everything except date is date -> make new log point
-  //TODO: cubuit stuff needs to be added
+  //TODO tak document id or smthg as parameter if empty create new documetn
+
+  //TODO: cubit stuff needs to be added
 }) {
   return showDialog(
     context: context,
