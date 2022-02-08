@@ -120,10 +120,10 @@ class DrivingScreen extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           // detailsDialog(context: context);
-                          var box = Hive.box<LogList>(logBox);
+                          var box = Hive.box<List>(log);
                           //TODO: test button
                           //box.put(dateTimeToDDMMYYYY(DateTime.now()), testList);
-                          box.put(dateTimeToDDMMYYYY(DateTime.now()), LogList(testList));
+                          box.put(dateTimeToDDMMYYYY(DateTime.now()), testList);
                         },
                         child: Container(
                           padding: const EdgeInsets.all(10),

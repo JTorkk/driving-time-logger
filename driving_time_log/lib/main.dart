@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
 
-part 'main.g.dart';
+// part 'main.g.dart';
 
-const logBox = 'logs';
+// const logBox = 'logs';
+const log = 'log';
 
 //TODO: document structure
 //days -> logs -> data
@@ -31,18 +32,20 @@ const logBox = 'logs';
 //   Log(this.type, this.startTime, this.endTime, this.startKm, this.endKm, this.vehicleTag);
 // }
 
-@HiveType(typeId: 1)
-class LogList {
-  @HiveField(0)
-  List<Map<String, dynamic>>? data;
+// @HiveType(typeId: 1)
+// class LogList {
+//   @HiveField(0)
+//   List<Map<String, dynamic>>? data;
 
-  LogList(this.data);
-}
+//   LogList(this.data);
+// }
 
 void main() async {
   await Hive.initFlutter();
-  Hive.registerAdapter<LogList>(LogListAdapter());
-  await Hive.openBox<LogList>(logBox);
+  // Hive.registerAdapter<LogList>(LogListAdapter());
+  //TODO: revert baack to list
+  // await Hive.openBox<LogList>(logBox);
+  await Hive.openBox<List>(log);
 
   runApp(const MyApp());
 }

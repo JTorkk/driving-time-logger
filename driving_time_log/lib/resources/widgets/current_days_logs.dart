@@ -23,8 +23,21 @@ class CurrentDayLogs extends StatelessWidget {
       //TODO: move the list so that the bottomest one is the newest and all the older are above
       child: ValueListenableBuilder(
         //TODO: toimisko lazt boxina jos kuunnellaan vain päivän keytä
-        valueListenable: Hive.box<LogList>(logBox).listenable(),
-        builder: (context, Box<LogList> box, _) {
+        //  valueListenable: Hive.box<LogList>(logBox).listenable(),
+        // builder: (context, Box<LogList> box, _) {
+        //   var theme = Theme.of(context).textTheme;
+        //   if (box.values.isEmpty || box.get(_date) == null) {
+        //     return Center(
+        //       child: Text('No Logs', style: theme.bodyText1),
+        //     );
+        //   }
+        //   return ListView.builder(
+        //     itemCount: box.get(_date)?.data!.length,
+        //     itemBuilder: (context, index) {
+        //       Map? _currentDay = box.get(_date)?.data![index];
+        //       return Container(
+        valueListenable: Hive.box<List>(log).listenable(),
+        builder: (context, Box<List> box, _) {
           var theme = Theme.of(context).textTheme;
           if (box.values.isEmpty || box.get(_date) == null) {
             return Center(
@@ -32,9 +45,9 @@ class CurrentDayLogs extends StatelessWidget {
             );
           }
           return ListView.builder(
-            itemCount: box.get(_date)?.data!.length,
+            itemCount: box.get(_date)?.length,
             itemBuilder: (context, index) {
-              Map? _currentDay = box.get(_date)?.data![index];
+              Map? _currentDay = box.get(_date)?[index];
               return Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),
                 decoration: const BoxDecoration(
@@ -66,13 +79,15 @@ class CurrentDayLogs extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           //TODO: null checks or make reading functions when works
-                          Text('Start: ${_currentDay!['startKm']}', style: theme.bodyText2),
-                          Text('End:   ${_currentDay['ebdKm']}', style: theme.bodyText2),
+                          Text('Start: ${_currentDay!['startTime']}', style: theme.bodyText2),
+                          Text('End:   ${_currentDay['endTime']}', style: theme.bodyText2),
                         ],
                       ),
                       IconButton(
                         onPressed: () {
-                          detailsDialog(context: context);
+                          print(_currentDay.toString());
+                          //TODO: enable
+                          // detailsDialog(context: context);
                         },
                         icon: const Icon(Icons.arrow_forward_ios_rounded),
                       ),

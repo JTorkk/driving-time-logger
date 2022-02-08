@@ -9,7 +9,8 @@ import 'cubit/edit_details_dialog_cubit.dart';
 
 Future<dynamic> detailsDialog({
   required BuildContext context,
-  //TODO tak document id or smthg as parameter if empty create new documetn
+  DateTime? date,
+  //TODO: if date is null create new log else edit details
 }) {
   return showDialog(
     context: context,
@@ -228,6 +229,9 @@ Future<dynamic> detailsDialog({
                   Container(
                     margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                     padding: const EdgeInsets.only(bottom: 16),
+                    decoration: const BoxDecoration(
+                      border: Border(bottom: BorderSide(color: accent, width: 2)),
+                    ),
                     child: Row(
                       children: [
                         //TODO: custom keyboard to add - automatically
@@ -236,13 +240,36 @@ Future<dynamic> detailsDialog({
                             minWidth: widht,
                           ),
                           child: Text(
-                            'vehicle tag',
+                            'Vehicle tag',
                             style: theme.bodyText1,
                           ),
                         ),
 
                         Text(
                           'ABC-123',
+                          style: theme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: Row(
+                      children: [
+                        //TODO: custom keyboard to add - automatically
+                        Container(
+                          constraints: BoxConstraints(
+                            minWidth: widht,
+                          ),
+                          child: Text(
+                            'Description',
+                            style: theme.bodyText1,
+                          ),
+                        ),
+
+                        Text(
+                          'for example food',
                           style: theme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
                         ),
                       ],
