@@ -1,7 +1,7 @@
 import 'package:driving_time_log/main.dart';
 import 'package:driving_time_log/resources/assets.dart';
 import 'package:driving_time_log/resources/colors.dart';
-import 'package:driving_time_log/resources/date_time_to.dart';
+import 'package:driving_time_log/resources/date_functions.dart';
 import 'package:driving_time_log/resources/maps_Lists_enums.dart';
 import 'package:driving_time_log/resources/widgets/edit_details_dialog/edit_details_dialog.dart';
 import 'package:driving_time_log/resources/widgets/svg_icon.dart';
@@ -23,19 +23,7 @@ class CurrentDayLogs extends StatelessWidget {
       //TODO: move the list so that the bottomest one is the newest and all the older are above
       child: ValueListenableBuilder(
         //TODO: toimisko lazt boxina jos kuunnellaan vain päivän keytä
-        //  valueListenable: Hive.box<LogList>(logBox).listenable(),
-        // builder: (context, Box<LogList> box, _) {
-        //   var theme = Theme.of(context).textTheme;
-        //   if (box.values.isEmpty || box.get(_date) == null) {
-        //     return Center(
-        //       child: Text('No Logs', style: theme.bodyText1),
-        //     );
-        //   }
-        //   return ListView.builder(
-        //     itemCount: box.get(_date)?.data!.length,
-        //     itemBuilder: (context, index) {
-        //       Map? _currentDay = box.get(_date)?.data![index];
-        //       return Container(
+
         valueListenable: Hive.box<List>(log).listenable(),
         builder: (context, Box<List> box, _) {
           var theme = Theme.of(context).textTheme;
@@ -48,6 +36,8 @@ class CurrentDayLogs extends StatelessWidget {
             itemCount: box.get(_date)?.length,
             itemBuilder: (context, index) {
               Map? _currentDay = box.get(_date)?[index];
+              var _icon = _currentDay!['type'].toString();
+
               return Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),
                 decoration: const BoxDecoration(
@@ -62,16 +52,16 @@ class CurrentDayLogs extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SvgIcon(
-                        assetName: driving,
+                        assetName: iconPaths[_icon],
                         size: 40,
-                        color: iconColors['driving'],
+                        color: iconColors[_icon],
                       ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Duration:', style: theme.bodyText1),
-                          Text('1h 15min', style: theme.bodyText1),
+                          Text('Duration:', style: theme.bodyText2),
+                          Text(duration(_currentDay['startTime'], _currentDay['endTime']), style: theme.bodyText2),
                         ],
                       ),
                       Column(
@@ -79,15 +69,16 @@ class CurrentDayLogs extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           //TODO: null checks or make reading functions when works
-                          Text('Start: ${_currentDay!['startTime']}', style: theme.bodyText2),
+                          Text('Start: ${_currentDay['startTime']}', style: theme.bodyText2),
                           Text('End:   ${_currentDay['endTime']}', style: theme.bodyText2),
                         ],
                       ),
                       IconButton(
                         onPressed: () {
                           print(_currentDay.toString());
+
                           //TODO: enable
-                          // detailsDialog(context: context);
+                          detailsDialog(context: context, date: day, index: index);
                         },
                         icon: const Icon(Icons.arrow_forward_ios_rounded),
                       ),

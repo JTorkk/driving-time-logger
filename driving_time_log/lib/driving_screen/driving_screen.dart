@@ -2,7 +2,7 @@ import 'package:driving_time_log/driving_screen/cubit/driving_cubit.dart';
 import 'package:driving_time_log/main.dart';
 import 'package:driving_time_log/resources/assets.dart';
 import 'package:driving_time_log/resources/colors.dart';
-import 'package:driving_time_log/resources/date_time_to.dart';
+import 'package:driving_time_log/resources/date_functions.dart';
 import 'package:driving_time_log/resources/maps_Lists_enums.dart';
 import 'package:driving_time_log/resources/widgets/button_with_icon.dart';
 import 'package:driving_time_log/resources/widgets/current_days_logs.dart';
@@ -22,9 +22,52 @@ class DrivingScreen extends StatelessWidget {
       create: (context) => DrivingCubit(),
       child: BlocBuilder<DrivingCubit, DrivingState>(
         builder: (context, state) {
-          //TODO: muuta log list typeksi
-          Map<String, dynamic> testMap = {'startTime': '13:30', 'endTime': '14:00'};
-          var testList = [testMap];
+          Map<String, dynamic> _drive = {
+            'type': 'driving',
+            'startTime': '13:30',
+            'endTime': '14:00',
+            'startKm': '120 001',
+            'endKm': '120 135',
+            'VehicleTag': 'ABC-123',
+            'description': 'food or smthg'
+          };
+          Map<String, dynamic> _service = {
+            'type': 'service',
+            'startTime': '14:00',
+            'endTime': '15:58',
+            // 'startKm': '',
+            // 'endKm': '120 135',
+            // 'vehicleTag': 'ABC-123',
+            'description': 'food or smthg'
+          };
+          Map<String, dynamic> _other = {
+            'type': 'otherWork',
+            'startTime': '15:58',
+            'endTime': '17:30',
+            // 'startKm': '',
+            // 'endKm': '120 135',
+            // 'vehicleTag': 'ABC-123',
+            'description': 'lastaus'
+          };
+          Map<String, dynamic> _sleepAndBreak = {
+            'type': 'sleepAndBreak',
+            'startTime': '17:30',
+            'endTime': '18:00',
+            // 'startKm': '',
+            // 'endKm': '120 135',
+            // 'vehicleTag': 'ABC-123',
+            'description': 'sleep'
+          };
+          Map<String, dynamic> _out = {
+            'type': 'out',
+            'startTime': '18:00',
+            'endTime': '22:45',
+            // 'startKm': '',
+            // 'endKm': '120 135',
+            // 'vehicleTag': 'ABC-123',
+            'description': 'out yes'
+          };
+          var testList = [_drive, _service, _other, _sleepAndBreak, _out];
           return SafeArea(
             bottom: false,
             right: false,
@@ -119,10 +162,9 @@ class DrivingScreen extends StatelessWidget {
                       //TODO: add  remove btton for test
                       GestureDetector(
                         onTap: () {
+                          //TODO: enable
                           // detailsDialog(context: context);
                           var box = Hive.box<List>(log);
-                          //TODO: test button
-                          //box.put(dateTimeToDDMMYYYY(DateTime.now()), testList);
                           box.put(dateTimeToDDMMYYYY(DateTime.now()), testList);
                         },
                         child: Container(

@@ -11,6 +11,22 @@ Map<String, Color> iconColors = {
   'sleepAndBreak': orange,
 };
 
+Map<String, String> iconPaths = {
+  'driving': 'assets/driving.svg',
+  'otherWork': 'assets/otherWork.svg',
+  'service': 'assets/service.svg',
+  'out': 'assets/out.svg',
+  'sleepAndBreak': 'assets/sleepAndBreak.svg',
+};
+
+Map<String, IconsAndNames> iconEnum = {
+  'driving': IconsAndNames.driving,
+  'otherWork': IconsAndNames.otherWork,
+  'service': IconsAndNames.service,
+  'out': IconsAndNames.out,
+  'sleepAndBreak': IconsAndNames.sleepAndBreak,
+};
+
 //lists
 List<String> iconNames = [
   'driving',

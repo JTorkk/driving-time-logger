@@ -1,24 +1,33 @@
+import 'package:driving_time_log/main.dart';
 import 'package:driving_time_log/resources/assets.dart';
 import 'package:driving_time_log/resources/colors.dart';
+import 'package:driving_time_log/resources/date_functions.dart';
 import 'package:driving_time_log/resources/maps_Lists_enums.dart';
 import 'package:driving_time_log/resources/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'cubit/edit_details_dialog_cubit.dart';
 
 Future<dynamic> detailsDialog({
   required BuildContext context,
   DateTime? date,
+  int index = 0, //TODO: is this ok to always defautl zero
   //TODO: if date is null create new log else edit details
+  //TODO: handle editing
+  //TODO: hide unneccesary field for every type
 }) {
+  var _date = dateTimeToDDMMYYYY(date ?? DateTime.now());
+  var data = Hive.box<List>(log).get(_date)![index];
+
   return showDialog(
     context: context,
     builder: (context) {
       var theme = Theme.of(context).textTheme;
       var widht = 120.0;
       return BlocProvider(
-        create: (context) => EditDetailsDialogCubit(),
+        create: (context) => EditDetailsDialogCubit(icon: iconEnum[data['type']]),
         child: BlocBuilder<EditDetailsDialogCubit, EditDetailsDialogState>(
           builder: (context, state) {
             return Dialog(
@@ -49,7 +58,9 @@ Future<dynamic> detailsDialog({
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
                             child: Container(
                               padding: const EdgeInsets.all(10),
                               decoration: const BoxDecoration(
@@ -81,17 +92,76 @@ Future<dynamic> detailsDialog({
                           style: theme.bodyText1,
                         ),
                         const SizedBox(width: 20),
-                        //TODO: the chooosen is colored
-                        //TODO: make this button/picker
-                        SvgIcon(assetName: driving, size: 25, color: iconColors['driving']),
+                        //TODO: make neater sub widget
+
+                        GestureDetector(
+                          onTap: state.enabledIcon == IconsAndNames.driving
+                              ? null
+                              : () {
+                                  context.read<EditDetailsDialogCubit>().setEnabledButton(button: IconsAndNames.driving);
+                                },
+                          child: SvgIcon(
+                            assetName: driving,
+                            size: 25,
+                            color: state.enabledIcon == IconsAndNames.driving ? iconColors['driving'] : white,
+                          ),
+                        ),
                         const SizedBox(width: 10),
-                        const SvgIcon(assetName: service, size: 25),
+                        GestureDetector(
+                          onTap: state.enabledIcon == IconsAndNames.service
+                              ? null
+                              : () {
+                                  context.read<EditDetailsDialogCubit>().setEnabledButton(button: IconsAndNames.service);
+                                },
+                          child: SvgIcon(
+                            assetName: service,
+                            size: 25,
+                            color: state.enabledIcon == IconsAndNames.service ? iconColors['service'] : white,
+                          ),
+                        ),
+                        // const SvgIcon(assetName: service, size: 25),
                         const SizedBox(width: 10),
-                        const SvgIcon(assetName: otherWork, size: 25),
+                        GestureDetector(
+                          onTap: state.enabledIcon == IconsAndNames.otherWork
+                              ? null
+                              : () {
+                                  context.read<EditDetailsDialogCubit>().setEnabledButton(button: IconsAndNames.otherWork);
+                                },
+                          child: SvgIcon(
+                            assetName: otherWork,
+                            size: 25,
+                            color: state.enabledIcon == IconsAndNames.otherWork ? iconColors['otherWork'] : white,
+                          ),
+                        ),
+                        // const SvgIcon(assetName: otherWork, size: 25),
                         const SizedBox(width: 10),
-                        const SvgIcon(assetName: sleepAndBreak, size: 25),
+                        GestureDetector(
+                          onTap: state.enabledIcon == IconsAndNames.sleepAndBreak
+                              ? null
+                              : () {
+                                  context.read<EditDetailsDialogCubit>().setEnabledButton(button: IconsAndNames.sleepAndBreak);
+                                },
+                          child: SvgIcon(
+                            assetName: sleepAndBreak,
+                            size: 25,
+                            color: state.enabledIcon == IconsAndNames.sleepAndBreak ? iconColors['sleepAndBreak'] : white,
+                          ),
+                        ),
+                        // const SvgIcon(assetName: sleepAndBreak, size: 25),
                         const SizedBox(width: 10),
-                        const SvgIcon(assetName: out, size: 25),
+                        GestureDetector(
+                          onTap: state.enabledIcon == IconsAndNames.out
+                              ? null
+                              : () {
+                                  context.read<EditDetailsDialogCubit>().setEnabledButton(button: IconsAndNames.out);
+                                },
+                          child: SvgIcon(
+                            assetName: out,
+                            size: 25,
+                            color: state.enabledIcon == IconsAndNames.out ? iconColors['out'] : white,
+                          ),
+                        ),
+                        // const SvgIcon(assetName: out, size: 25),
                       ],
                     ),
                   ),
@@ -116,7 +186,7 @@ Future<dynamic> detailsDialog({
                         //TODO: custom keyboard to add : automatically
                         //TODO: default to the current time if empty??
                         Text(
-                          '12:35',
+                          '${data['startTime']}',
                           style: theme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
                         ),
                       ],
@@ -142,64 +212,66 @@ Future<dynamic> detailsDialog({
                         ),
 
                         Text(
-                          '13:45',
+                          '${data['endTime']}',
                           style: theme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
                         ),
                       ],
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                    padding: const EdgeInsets.only(bottom: 16),
-                    decoration: const BoxDecoration(
-                      border: Border(bottom: BorderSide(color: accent, width: 2)),
-                    ),
-                    child: Row(
-                      children: [
-                        //TODO: number keyboard
-                        Container(
-                          constraints: BoxConstraints(
-                            minWidth: widht,
+                  if (data['type'] == 'driving')
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                      padding: const EdgeInsets.only(bottom: 16),
+                      decoration: const BoxDecoration(
+                        border: Border(bottom: BorderSide(color: accent, width: 2)),
+                      ),
+                      child: Row(
+                        children: [
+                          //TODO: number keyboard
+                          Container(
+                            constraints: BoxConstraints(
+                              minWidth: widht,
+                            ),
+                            child: Text(
+                              'Start km',
+                              style: theme.bodyText1,
+                            ),
                           ),
-                          child: Text(
-                            'Start km',
-                            style: theme.bodyText1,
-                          ),
-                        ),
 
-                        Text(
-                          '120 000',
-                          style: theme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                    padding: const EdgeInsets.only(bottom: 16),
-                    decoration: const BoxDecoration(
-                      border: Border(bottom: BorderSide(color: accent, width: 2)),
-                    ),
-                    child: Row(
-                      children: [
-                        //TODO: number keyboard
-                        Container(
-                          constraints: BoxConstraints(
-                            minWidth: widht,
+                          Text(
+                            '${data['startKm']}',
+                            style: theme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
                           ),
-                          child: Text(
-                            'End km',
-                            style: theme.bodyText1,
+                        ],
+                      ),
+                    ),
+                  if (data['type'] == 'driving')
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                      padding: const EdgeInsets.only(bottom: 16),
+                      decoration: const BoxDecoration(
+                        border: Border(bottom: BorderSide(color: accent, width: 2)),
+                      ),
+                      child: Row(
+                        children: [
+                          //TODO: number keyboard
+                          Container(
+                            constraints: BoxConstraints(
+                              minWidth: widht,
+                            ),
+                            child: Text(
+                              'End km',
+                              style: theme.bodyText1,
+                            ),
                           ),
-                        ),
 
-                        Text(
-                          '120 200',
-                          style: theme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
-                        ),
-                      ],
+                          Text(
+                            '${data['endKm']}',
+                            style: theme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                   Container(
                     margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                     padding: const EdgeInsets.only(bottom: 16),
@@ -220,38 +292,40 @@ Future<dynamic> detailsDialog({
                         ),
 
                         Text(
-                          '1h 10min',
+                          duration(data['startTime'], data['endTime']),
                           style: theme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
                         ),
                       ],
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                    padding: const EdgeInsets.only(bottom: 16),
-                    decoration: const BoxDecoration(
-                      border: Border(bottom: BorderSide(color: accent, width: 2)),
-                    ),
-                    child: Row(
-                      children: [
-                        //TODO: custom keyboard to add - automatically
-                        Container(
-                          constraints: BoxConstraints(
-                            minWidth: widht,
+                  if (data['type'] == 'driving')
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                      padding: const EdgeInsets.only(bottom: 16),
+                      decoration: const BoxDecoration(
+                        border: Border(bottom: BorderSide(color: accent, width: 2)),
+                      ),
+                      child: Row(
+                        children: [
+                          //TODO: custom keyboard to add - automatically
+                          Container(
+                            constraints: BoxConstraints(
+                              minWidth: widht,
+                            ),
+                            child: Text(
+                              'Vehicle tag',
+                              style: theme.bodyText1,
+                            ),
                           ),
-                          child: Text(
-                            'Vehicle tag',
-                            style: theme.bodyText1,
-                          ),
-                        ),
 
-                        Text(
-                          'ABC-123',
-                          style: theme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
-                        ),
-                      ],
+                          Text(
+                            //TODO: wgy does this return null
+                            '${data['VehicleTag']}',
+                            style: theme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                   Container(
                     margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                     padding: const EdgeInsets.only(bottom: 16),
@@ -269,7 +343,7 @@ Future<dynamic> detailsDialog({
                         ),
 
                         Text(
-                          'for example food',
+                          '${data['description']}',
                           style: theme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
                         ),
                       ],
