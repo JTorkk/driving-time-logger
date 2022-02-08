@@ -1,8 +1,10 @@
 import 'package:driving_time_log/resources/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'archive_screen/archive_screen.dart';
 import 'driving_screen/driving_screen.dart';
+import 'main.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

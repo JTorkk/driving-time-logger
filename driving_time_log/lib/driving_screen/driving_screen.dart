@@ -1,12 +1,15 @@
 import 'package:driving_time_log/driving_screen/cubit/driving_cubit.dart';
+import 'package:driving_time_log/main.dart';
 import 'package:driving_time_log/resources/assets.dart';
 import 'package:driving_time_log/resources/colors.dart';
+import 'package:driving_time_log/resources/date_time_to.dart';
 import 'package:driving_time_log/resources/maps_Lists_enums.dart';
 import 'package:driving_time_log/resources/widgets/button_with_icon.dart';
 import 'package:driving_time_log/resources/widgets/current_days_logs.dart';
-import 'package:driving_time_log/resources/widgets/edit_details_dialog.dart';
+import 'package:driving_time_log/resources/widgets/edit_details_dialog/edit_details_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class DrivingScreen extends StatelessWidget {
   const DrivingScreen({Key? key}) : super(key: key);
@@ -19,6 +22,9 @@ class DrivingScreen extends StatelessWidget {
       create: (context) => DrivingCubit(),
       child: BlocBuilder<DrivingCubit, DrivingState>(
         builder: (context, state) {
+          //TODO: muuta log list typeksi
+          Map<String, dynamic> testMap = {'startTime': '13:30', 'endTime': '14:00'};
+          var testList = [testMap];
           return SafeArea(
             bottom: false,
             right: false,
@@ -110,9 +116,14 @@ class DrivingScreen extends StatelessWidget {
                         "Today's logs:",
                         style: theme.headline2,
                       ),
+                      //TODO: add  remove btton for test
                       GestureDetector(
                         onTap: () {
-                          detailsDialog(context: context);
+                          // detailsDialog(context: context);
+                          var box = Hive.box<LogList>(logBox);
+                          //TODO: test button
+                          //box.put(dateTimeToDDMMYYYY(DateTime.now()), testList);
+                          box.put(dateTimeToDDMMYYYY(DateTime.now()), LogList(testList));
                         },
                         child: Container(
                           padding: const EdgeInsets.all(10),
@@ -131,7 +142,7 @@ class DrivingScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  const CurrentDayLogs(),
+                  CurrentDayLogs(day: DateTime.now()),
                 ],
               ),
             ),
