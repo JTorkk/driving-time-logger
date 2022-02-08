@@ -13,7 +13,7 @@ import 'cubit/edit_details_dialog_cubit.dart';
 Future<dynamic> detailsDialog({
   required BuildContext context,
   DateTime? date,
-  int index = 0, //TODO: is this ok to always defautl zero
+  int index = 0, //TODO: is this ok to always defautl zero <-- it is if creating new entry takes first one
   //TODO: if date is null create new log else edit details
   //TODO: handle editing
   //TODO: hide unneccesary field for every type
@@ -165,190 +165,34 @@ Future<dynamic> detailsDialog({
                       ],
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                    padding: const EdgeInsets.only(bottom: 16),
-                    decoration: const BoxDecoration(
-                      border: Border(bottom: BorderSide(color: accent, width: 2)),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          constraints: BoxConstraints(
-                            minWidth: widht,
-                          ),
-                          child: Text(
-                            'Start time',
-                            style: theme.bodyText1,
-                          ),
-                        ),
 
-                        //TODO: custom keyboard to add : automatically
-                        //TODO: default to the current time if empty??
-                        Text(
-                          '${data['startTime']}',
-                          style: theme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                    padding: const EdgeInsets.only(bottom: 16),
-                    decoration: const BoxDecoration(
-                      border: Border(bottom: BorderSide(color: accent, width: 2)),
-                    ),
-                    child: Row(
-                      children: [
-                        //TODO: custom keyboard to add : automatically
-                        Container(
-                          constraints: BoxConstraints(
-                            minWidth: widht,
-                          ),
-                          child: Text(
-                            'End time',
-                            style: theme.bodyText1,
-                          ),
-                        ),
+                  //TODO: custom keyboard to add : automatically
+                  //TODO: default to the current time if empty??
+                  _DataEntry(text: 'Start time', dataKey: 'startTime', textTheme: theme, data: data),
 
-                        Text(
-                          '${data['endTime']}',
-                          style: theme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
-                        ),
-                      ],
-                    ),
-                  ),
+                  //       //TODO: custom keyboard to add : automatically
+                  _DataEntry(text: 'End time', dataKey: 'endTime', textTheme: theme, data: data),
+
                   if (data['type'] == 'driving')
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                      padding: const EdgeInsets.only(bottom: 16),
-                      decoration: const BoxDecoration(
-                        border: Border(bottom: BorderSide(color: accent, width: 2)),
-                      ),
-                      child: Row(
-                        children: [
-                          //TODO: number keyboard
-                          Container(
-                            constraints: BoxConstraints(
-                              minWidth: widht,
-                            ),
-                            child: Text(
-                              'Start km',
-                              style: theme.bodyText1,
-                            ),
-                          ),
+                    //       //TODO: number keyboard
+                    _DataEntry(text: 'Start km', dataKey: 'startKm', textTheme: theme, data: data),
 
-                          Text(
-                            '${data['startKm']}',
-                            style: theme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
-                          ),
-                        ],
-                      ),
-                    ),
                   if (data['type'] == 'driving')
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                      padding: const EdgeInsets.only(bottom: 16),
-                      decoration: const BoxDecoration(
-                        border: Border(bottom: BorderSide(color: accent, width: 2)),
-                      ),
-                      child: Row(
-                        children: [
-                          //TODO: number keyboard
-                          Container(
-                            constraints: BoxConstraints(
-                              minWidth: widht,
-                            ),
-                            child: Text(
-                              'End km',
-                              style: theme.bodyText1,
-                            ),
-                          ),
+                    //TODO: number keyboard
+                    _DataEntry(text: 'End km', dataKey: 'endKm', textTheme: theme, data: data),
 
-                          Text(
-                            '${data['endKm']}',
-                            style: theme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
-                          ),
-                        ],
-                      ),
-                    ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                    padding: const EdgeInsets.only(bottom: 16),
-                    decoration: const BoxDecoration(
-                      border: Border(bottom: BorderSide(color: accent, width: 2)),
-                    ),
-                    child: Row(
-                      children: [
-                        //TODO: no need to edit manually
-                        Container(
-                          constraints: BoxConstraints(
-                            minWidth: widht,
-                          ),
-                          child: Text(
-                            'Duration',
-                            style: theme.bodyText1,
-                          ),
-                        ),
+                  //TODO: no need to edit manually
+                  _DataEntry(
+                      text: 'Duration', dataKey: duration(data['startTime'], data['endTime']), textTheme: theme, data: data, desc: true),
 
-                        Text(
-                          duration(data['startTime'], data['endTime']),
-                          style: theme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
-                        ),
-                      ],
-                    ),
-                  ),
                   if (data['type'] == 'driving')
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                      padding: const EdgeInsets.only(bottom: 16),
-                      decoration: const BoxDecoration(
-                        border: Border(bottom: BorderSide(color: accent, width: 2)),
-                      ),
-                      child: Row(
-                        children: [
-                          //TODO: custom keyboard to add - automatically
-                          Container(
-                            constraints: BoxConstraints(
-                              minWidth: widht,
-                            ),
-                            child: Text(
-                              'Vehicle tag',
-                              style: theme.bodyText1,
-                            ),
-                          ),
+                    //       //TODO: custom keyboard to add - automatically
+                    //         //TODO: why does this return null
+                    _DataEntry(text: 'Vehicle tag', dataKey: 'VehicleTag', textTheme: theme, data: data),
 
-                          Text(
-                            //TODO: wgy does this return null
-                            '${data['VehicleTag']}',
-                            style: theme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
-                          ),
-                        ],
-                      ),
-                    ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: Row(
-                      children: [
-                        //TODO: custom keyboard to add - automatically
-                        Container(
-                          constraints: BoxConstraints(
-                            minWidth: widht,
-                          ),
-                          child: Text(
-                            'Description',
-                            style: theme.bodyText1,
-                          ),
-                        ),
+                  //       //TODO: normal keyboard
+                  _DataEntry(text: 'Description', dataKey: 'description', textTheme: theme, data: data, last: true),
 
-                        Text(
-                          '${data['description']}',
-                          style: theme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
-                        ),
-                      ],
-                    ),
-                  ),
                   //TODO: add remove log button here
                 ],
               ),
@@ -358,4 +202,55 @@ Future<dynamic> detailsDialog({
       );
     },
   );
+}
+
+//TODO: handle different keyboards
+class _DataEntry extends StatelessWidget {
+  final String text;
+  final String dataKey;
+  final TextTheme textTheme;
+  final dynamic data;
+  final bool last;
+  final bool desc;
+  //TODO: add input type enum so right keyboard can be choosen
+  const _DataEntry(
+      {Key? key,
+      required this.text,
+      required this.dataKey,
+      required this.textTheme,
+      required this.data,
+      this.last = false,
+      this.desc = false})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+      padding: const EdgeInsets.only(bottom: 16),
+      decoration: last
+          ? null
+          : const BoxDecoration(
+              border: Border(bottom: BorderSide(color: accent, width: 2)),
+            ),
+      child: Row(
+        children: [
+          Container(
+            constraints: const BoxConstraints(
+              minWidth: 120,
+            ),
+            child: Text(
+              text,
+              style: textTheme.bodyText1,
+            ),
+          ),
+          //TODO: maybe move to its own file and add cubit to handle text editing
+          Text(
+            desc ? dataKey : '${data[dataKey]}',
+            style: textTheme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
+          ),
+        ],
+      ),
+    );
+  }
 }
