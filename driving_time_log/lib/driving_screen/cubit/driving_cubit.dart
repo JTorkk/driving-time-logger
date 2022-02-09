@@ -9,12 +9,12 @@ part 'driving_state.dart';
 class DrivingCubit extends Cubit<DrivingState> {
   DrivingCubit() : super(const DrivingState());
 
-  void setEnabledButton({required IconsAndNames button}) async {
-    emit(state.copyWith(enabledIcon: button));
-  }
-
   void buttonPressed({required IconsAndNames button}) async {
-    var box = Hive.box<List>(log);
+    emit(state.copyWith(enabledIcon: button));
+
+    //TODO: if driving is started or ended ask for km, vehicletag and more
+
+    var box = Hive.box<List>(logBox);
 
     Map<String, dynamic> _out = {
       'type': enumIcon[button],

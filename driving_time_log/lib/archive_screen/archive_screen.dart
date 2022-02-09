@@ -1,6 +1,5 @@
 import 'package:driving_time_log/archive_screen/cubit/archive_cubit.dart';
 import 'package:driving_time_log/resources/colors.dart';
-import 'package:driving_time_log/resources/date_functions.dart';
 import 'package:driving_time_log/resources/widgets/current_days_logs.dart';
 import 'package:driving_time_log/resources/widgets/edit_details_dialog/edit_details_dialog.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +27,7 @@ class ArchiveScreen extends StatelessWidget {
                 children: [
                   TableCalendar(
                     //TODO: runkkaa kalnterin fontit ja värit yms kuntoon
+                    //TODO: when the aplication is first opened no day is focused
                     calendarStyle: CalendarStyle(
                       defaultTextStyle: theme.bodyText2!,
                       todayDecoration: const BoxDecoration(shape: BoxShape.circle),
@@ -47,7 +47,6 @@ class ArchiveScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        //TODO: adapt to the chhosen day
                         "${context.read<ArchiveCubit>().getDateText()} logs:",
                         style: theme.headline2,
                       ),

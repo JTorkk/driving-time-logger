@@ -17,7 +17,7 @@ class DrivingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context).textTheme;
-    var box = Hive.box<List>(log);
+    var box = Hive.box<List>(logBox);
 
     return BlocProvider(
       create: (context) => DrivingCubit(),
@@ -69,6 +69,10 @@ class DrivingScreen extends StatelessWidget {
             'description': 'out yes'
           };
           var testList = [_drive, _service, _other, _sleepAndBreak, _out];
+          //TODO: When app is restarted the pressed button is not kept and will go back to default
+          //save the pressed button to button box when the custom enum typeadapter is made
+
+          //TODO: if app is left open overnight the day willnot refres until reopened
           return SafeArea(
             bottom: false,
             right: false,
@@ -80,29 +84,33 @@ class DrivingScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ButtonWithIcon(
-                          text: 'Out',
-                          color: cyan,
-                          icon: out,
-                          selected: state.enabledIcon == IconsAndNames.out,
-                          enabled: !(state.enabledIcon == IconsAndNames.out),
-                          onTap: () {
-                            context.read<DrivingCubit>().setEnabledButton(button: IconsAndNames.out);
-                            context.read<DrivingCubit>().buttonPressed(button: IconsAndNames.out);
-                          },
+                        Expanded(
+                          child: ButtonWithIcon(
+                            text: 'Out',
+                            color: cyan,
+                            icon: out,
+                            selected: state.enabledIcon == IconsAndNames.out,
+                            enabled: !(state.enabledIcon == IconsAndNames.out),
+                            onTap: () {
+                              // context.read<DrivingCubit>().setEnabledButton(button: IconsAndNames.out);
+                              context.read<DrivingCubit>().buttonPressed(button: IconsAndNames.out);
+                            },
+                          ),
                         ),
-                        ButtonWithIcon(
-                          text: 'Break',
-                          color: orange,
-                          icon: sleepAndBreak,
-                          selected: state.enabledIcon == IconsAndNames.sleepAndBreak,
-                          enabled: !(state.enabledIcon == IconsAndNames.sleepAndBreak),
-                          onTap: () {
-                            context.read<DrivingCubit>().setEnabledButton(button: IconsAndNames.sleepAndBreak);
-                            context.read<DrivingCubit>().buttonPressed(button: IconsAndNames.sleepAndBreak);
-                          },
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: ButtonWithIcon(
+                            text: 'Break',
+                            color: orange,
+                            icon: sleepAndBreak,
+                            selected: state.enabledIcon == IconsAndNames.sleepAndBreak,
+                            enabled: !(state.enabledIcon == IconsAndNames.sleepAndBreak),
+                            onTap: () {
+                              // context.read<DrivingCubit>().setEnabledButton(button: IconsAndNames.sleepAndBreak);
+                              context.read<DrivingCubit>().buttonPressed(button: IconsAndNames.sleepAndBreak);
+                            },
+                          ),
                         ),
                       ],
                     ),
@@ -110,29 +118,31 @@ class DrivingScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ButtonWithIcon(
-                          text: 'Service',
-                          color: red,
-                          icon: service,
-                          selected: state.enabledIcon == IconsAndNames.service,
-                          enabled: !(state.enabledIcon == IconsAndNames.service),
-                          onTap: () {
-                            context.read<DrivingCubit>().setEnabledButton(button: IconsAndNames.service);
-                            context.read<DrivingCubit>().buttonPressed(button: IconsAndNames.service);
-                          },
+                        Expanded(
+                          child: ButtonWithIcon(
+                            text: 'Service',
+                            color: red,
+                            icon: service,
+                            selected: state.enabledIcon == IconsAndNames.service,
+                            enabled: !(state.enabledIcon == IconsAndNames.service),
+                            onTap: () {
+                              context.read<DrivingCubit>().buttonPressed(button: IconsAndNames.service);
+                            },
+                          ),
                         ),
-                        ButtonWithIcon(
-                          text: 'Other',
-                          color: blue,
-                          icon: otherWork,
-                          selected: state.enabledIcon == IconsAndNames.otherWork,
-                          enabled: !(state.enabledIcon == IconsAndNames.otherWork),
-                          onTap: () {
-                            context.read<DrivingCubit>().setEnabledButton(button: IconsAndNames.otherWork);
-                            context.read<DrivingCubit>().buttonPressed(button: IconsAndNames.otherWork);
-                          },
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: ButtonWithIcon(
+                            text: 'Other',
+                            color: blue,
+                            icon: otherWork,
+                            selected: state.enabledIcon == IconsAndNames.otherWork,
+                            enabled: !(state.enabledIcon == IconsAndNames.otherWork),
+                            onTap: () {
+                              context.read<DrivingCubit>().buttonPressed(button: IconsAndNames.otherWork);
+                            },
+                          ),
                         ),
                       ],
                     ),
@@ -147,7 +157,7 @@ class DrivingScreen extends StatelessWidget {
                       selected: state.enabledIcon == IconsAndNames.driving,
                       enabled: !(state.enabledIcon == IconsAndNames.driving),
                       onTap: () {
-                        context.read<DrivingCubit>().setEnabledButton(button: IconsAndNames.driving);
+                        // context.read<DrivingCubit>().setEnabledButton(button: IconsAndNames.driving);
                         context.read<DrivingCubit>().buttonPressed(button: IconsAndNames.driving);
                       },
                     ),
@@ -160,6 +170,7 @@ class DrivingScreen extends StatelessWidget {
                         "Today's logs:",
                         style: theme.headline2,
                       ),
+                      //TODO: remove edit button for v1.0 relase
                       GestureDetector(
                         onTap: () {
                           //TODO: enable

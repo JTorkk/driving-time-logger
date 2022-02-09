@@ -16,17 +16,16 @@ Future<dynamic> detailsDialog({
   int index = 0, //TODO: is this ok to always defautl zero <-- it is if creating new entry takes first one
   //TODO: if date is null create new log else edit details
   //TODO: handle editing
-  //TODO: hide unneccesary field for every type
 }) {
   var _date = dateTimeToDDMMYYYY(date ?? DateTime.now());
-  var box = Hive.box<List>(log);
+  var box = Hive.box<List>(logBox);
   var data = box.get(_date)![index];
 
   return showDialog(
     context: context,
     builder: (context) {
       var theme = Theme.of(context).textTheme;
-      var widht = 120.0;
+
       return BlocProvider(
         create: (context) => EditDetailsDialogCubit(icon: iconEnum[data['type']]),
         child: BlocBuilder<EditDetailsDialogCubit, EditDetailsDialogState>(
@@ -93,76 +92,15 @@ Future<dynamic> detailsDialog({
                           style: theme.bodyText1,
                         ),
                         const SizedBox(width: 20),
-                        //TODO: make neater sub widget
-
-                        GestureDetector(
-                          onTap: state.enabledIcon == IconsAndNames.driving
-                              ? null
-                              : () {
-                                  context.read<EditDetailsDialogCubit>().setEnabledButton(button: IconsAndNames.driving);
-                                },
-                          child: SvgIcon(
-                            assetName: driving,
-                            size: 25,
-                            color: state.enabledIcon == IconsAndNames.driving ? iconColors['driving'] : white,
-                          ),
-                        ),
+                        _TypeButton(type: 'driving', state: state),
                         const SizedBox(width: 10),
-                        GestureDetector(
-                          onTap: state.enabledIcon == IconsAndNames.service
-                              ? null
-                              : () {
-                                  context.read<EditDetailsDialogCubit>().setEnabledButton(button: IconsAndNames.service);
-                                },
-                          child: SvgIcon(
-                            assetName: service,
-                            size: 25,
-                            color: state.enabledIcon == IconsAndNames.service ? iconColors['service'] : white,
-                          ),
-                        ),
-                        // const SvgIcon(assetName: service, size: 25),
+                        _TypeButton(type: 'service', state: state),
                         const SizedBox(width: 10),
-                        GestureDetector(
-                          onTap: state.enabledIcon == IconsAndNames.otherWork
-                              ? null
-                              : () {
-                                  context.read<EditDetailsDialogCubit>().setEnabledButton(button: IconsAndNames.otherWork);
-                                },
-                          child: SvgIcon(
-                            assetName: otherWork,
-                            size: 25,
-                            color: state.enabledIcon == IconsAndNames.otherWork ? iconColors['otherWork'] : white,
-                          ),
-                        ),
-                        // const SvgIcon(assetName: otherWork, size: 25),
+                        _TypeButton(type: 'otherWork', state: state),
                         const SizedBox(width: 10),
-                        GestureDetector(
-                          onTap: state.enabledIcon == IconsAndNames.sleepAndBreak
-                              ? null
-                              : () {
-                                  context.read<EditDetailsDialogCubit>().setEnabledButton(button: IconsAndNames.sleepAndBreak);
-                                },
-                          child: SvgIcon(
-                            assetName: sleepAndBreak,
-                            size: 25,
-                            color: state.enabledIcon == IconsAndNames.sleepAndBreak ? iconColors['sleepAndBreak'] : white,
-                          ),
-                        ),
-                        // const SvgIcon(assetName: sleepAndBreak, size: 25),
+                        _TypeButton(type: 'sleepAndBreak', state: state),
                         const SizedBox(width: 10),
-                        GestureDetector(
-                          onTap: state.enabledIcon == IconsAndNames.out
-                              ? null
-                              : () {
-                                  context.read<EditDetailsDialogCubit>().setEnabledButton(button: IconsAndNames.out);
-                                },
-                          child: SvgIcon(
-                            assetName: out,
-                            size: 25,
-                            color: state.enabledIcon == IconsAndNames.out ? iconColors['out'] : white,
-                          ),
-                        ),
-                        // const SvgIcon(assetName: out, size: 25),
+                        _TypeButton(type: 'out', state: state),
                       ],
                     ),
                   ),
@@ -219,6 +157,34 @@ Future<dynamic> detailsDialog({
   );
 }
 
+class _TypeButton extends StatelessWidget {
+  final String type;
+  final EditDetailsDialogState state;
+
+  const _TypeButton({
+    Key? key,
+    required this.type,
+    required this.state,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var iconType = iconEnum[type];
+    return GestureDetector(
+      onTap: state.enabledIcon == iconType
+          ? null
+          : () {
+              context.read<EditDetailsDialogCubit>().setEnabledButton(button: iconType!);
+            },
+      child: SvgIcon(
+        assetName: iconPaths[type],
+        size: 25,
+        color: state.enabledIcon == iconType ? iconColors[type] : white,
+      ),
+    );
+  }
+}
+
 //TODO: handle different keyboards
 class _DataEntry extends StatelessWidget {
   final String text;
@@ -259,7 +225,7 @@ class _DataEntry extends StatelessWidget {
               style: textTheme.bodyText1,
             ),
           ),
-          //TODO: maybe move to its own file and add cubit to handle text editing
+          //TODO: !!maybe!! move to its own file and add cubit to handle text editing
           Text(
             desc ? dataKey : '${data[dataKey]}',
             style: textTheme.bodyText1?.copyWith(color: white.withOpacity(0.5)),

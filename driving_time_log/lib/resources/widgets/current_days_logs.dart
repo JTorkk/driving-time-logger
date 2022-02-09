@@ -24,7 +24,7 @@ class CurrentDayLogs extends StatelessWidget {
       child: ValueListenableBuilder(
         //TODO: toimisko lazt boxina jos kuunnellaan vain päivän keytä
 
-        valueListenable: Hive.box<List>(log).listenable(),
+        valueListenable: Hive.box<List>(logBox).listenable(),
         builder: (context, Box<List> box, _) {
           var theme = Theme.of(context).textTheme;
           if (box.values.isEmpty || box.get(_date) == null) {

@@ -5,7 +5,7 @@ import 'package:table_calendar/table_calendar.dart';
 part 'archive_state.dart';
 
 class ArchiveCubit extends Cubit<ArchiveState> {
-  ArchiveCubit() : super(const ArchiveState());
+  ArchiveCubit() : super(ArchiveState());
 
   bool selectedDayPredicate(day) {
     return isSameDay(state.selectedDay, day);
