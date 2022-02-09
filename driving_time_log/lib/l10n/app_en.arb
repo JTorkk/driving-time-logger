@@ -1,0 +1,17 @@
+{
+    "helloWorld": "Hello World!",
+    "@helloWorld": {
+      "description": "The conventional newborn programmer greeting"
+    },
+    "driving": "Driving",
+    "@driving": {},
+    "other":"Other",
+    "@other": {},
+    "out":"Out",
+    "@out": {},
+    "service":"Service",
+    "@service": {},
+    "breeak":"Break",
+    "@breeak": {}
+    
+}

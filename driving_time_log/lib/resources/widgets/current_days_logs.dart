@@ -1,5 +1,4 @@
 import 'package:driving_time_log/main.dart';
-import 'package:driving_time_log/resources/assets.dart';
 import 'package:driving_time_log/resources/colors.dart';
 import 'package:driving_time_log/resources/date_functions.dart';
 import 'package:driving_time_log/resources/maps_Lists_enums.dart';
@@ -20,7 +19,6 @@ class CurrentDayLogs extends StatelessWidget {
   Widget build(BuildContext context) {
     var _date = dateTimeToDDMMYYYY(day);
     return Expanded(
-      //TODO: move the list so that the bottomest one is the newest and all the older are above
       child: ValueListenableBuilder(
         //TODO: toimisko lazt boxina jos kuunnellaan vain päivän keytä
 
@@ -32,6 +30,7 @@ class CurrentDayLogs extends StatelessWidget {
               child: Text('No Logs', style: theme.bodyText1),
             );
           }
+          //TODO: move the list so that the bottomest one is the newest and all the older are above
           return ListView.builder(
             itemCount: box.get(_date)?.length,
             itemBuilder: (context, index) {
@@ -68,16 +67,12 @@ class CurrentDayLogs extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          //TODO: null checks or make reading functions when works
                           Text('Start: ${_currentDay['startTime']}', style: theme.bodyText2),
                           Text('End:   ${_currentDay['endTime']}', style: theme.bodyText2),
                         ],
                       ),
                       IconButton(
                         onPressed: () {
-                          print(_currentDay.toString());
-
-                          //TODO: enable
                           detailsDialog(context: context, date: day, index: index);
                         },
                         icon: const Icon(Icons.arrow_forward_ios_rounded),

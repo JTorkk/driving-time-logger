@@ -10,6 +10,7 @@ import 'package:driving_time_log/resources/widgets/edit_details_dialog/edit_deta
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DrivingScreen extends StatelessWidget {
   const DrivingScreen({Key? key}) : super(key: key);
@@ -18,6 +19,8 @@ class DrivingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context).textTheme;
     var box = Hive.box<List>(logBox);
+
+    var local = AppLocalizations.of(context)!;
 
     return BlocProvider(
       create: (context) => DrivingCubit(),
@@ -87,13 +90,12 @@ class DrivingScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: ButtonWithIcon(
-                            text: 'Out',
+                            text: local.out,
                             color: cyan,
                             icon: out,
                             selected: state.enabledIcon == IconsAndNames.out,
                             enabled: !(state.enabledIcon == IconsAndNames.out),
                             onTap: () {
-                              // context.read<DrivingCubit>().setEnabledButton(button: IconsAndNames.out);
                               context.read<DrivingCubit>().buttonPressed(button: IconsAndNames.out);
                             },
                           ),
@@ -101,13 +103,12 @@ class DrivingScreen extends StatelessWidget {
                         const SizedBox(width: 20),
                         Expanded(
                           child: ButtonWithIcon(
-                            text: 'Break',
+                            text: local.breeak,
                             color: orange,
                             icon: sleepAndBreak,
                             selected: state.enabledIcon == IconsAndNames.sleepAndBreak,
                             enabled: !(state.enabledIcon == IconsAndNames.sleepAndBreak),
                             onTap: () {
-                              // context.read<DrivingCubit>().setEnabledButton(button: IconsAndNames.sleepAndBreak);
                               context.read<DrivingCubit>().buttonPressed(button: IconsAndNames.sleepAndBreak);
                             },
                           ),
@@ -121,7 +122,7 @@ class DrivingScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: ButtonWithIcon(
-                            text: 'Service',
+                            text: local.service,
                             color: red,
                             icon: service,
                             selected: state.enabledIcon == IconsAndNames.service,
@@ -134,7 +135,7 @@ class DrivingScreen extends StatelessWidget {
                         const SizedBox(width: 20),
                         Expanded(
                           child: ButtonWithIcon(
-                            text: 'Other',
+                            text: local.other,
                             color: blue,
                             icon: otherWork,
                             selected: state.enabledIcon == IconsAndNames.otherWork,
@@ -150,14 +151,13 @@ class DrivingScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: ButtonWithIcon(
-                      text: 'Driving',
+                      text: local.driving,
                       color: green,
                       icon: driving,
                       center: true,
                       selected: state.enabledIcon == IconsAndNames.driving,
                       enabled: !(state.enabledIcon == IconsAndNames.driving),
                       onTap: () {
-                        // context.read<DrivingCubit>().setEnabledButton(button: IconsAndNames.driving);
                         context.read<DrivingCubit>().buttonPressed(button: IconsAndNames.driving);
                       },
                     ),
@@ -170,10 +170,9 @@ class DrivingScreen extends StatelessWidget {
                         "Today's logs:",
                         style: theme.headline2,
                       ),
-                      //TODO: remove edit button for v1.0 relase
+                      //TODO: remove and edit button for v1.0 relase
                       GestureDetector(
                         onTap: () {
-                          //TODO: enable
                           box.delete(dateTimeToDDMMYYYY(DateTime.now()));
                         },
                         child: Container(
@@ -192,9 +191,9 @@ class DrivingScreen extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          //TODO: enable
-                          // detailsDialog(context: context);
-                          box.put(dateTimeToDDMMYYYY(DateTime.now()), testList);
+                          detailsDialog(context: context);
+                          //TODO: this can be used to generate test list
+                          //box.put(dateTimeToDDMMYYYY(DateTime.now()), testList);
                         },
                         child: Container(
                           padding: const EdgeInsets.all(10),

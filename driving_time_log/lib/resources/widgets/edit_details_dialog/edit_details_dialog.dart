@@ -141,9 +141,6 @@ Future<dynamic> detailsDialog({
                     onPressed: () {
                       box.delete(_date);
                       Navigator.pop(context);
-
-                      // data.delete[index];
-                      print('deleted data from $_date');
                     },
                   )
                 ],
@@ -219,6 +216,7 @@ class _DataEntry extends StatelessWidget {
             constraints: const BoxConstraints(
               minWidth: 120,
             ),
+            //TODO: if data is null use the grey color else more bright
             child: Text(
               text,
               style: textTheme.bodyText1,

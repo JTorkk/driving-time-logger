@@ -1,9 +1,10 @@
 import 'package:driving_time_log/home_screen.dart';
-import 'package:driving_time_log/resources/maps_Lists_enums.dart';
+
 import 'package:driving_time_log/resources/theme.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 const logBox = 'logBox';
 
@@ -23,6 +24,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       title: 'Driving Time Logger',
       theme: darkTheme,
       home: const HomeScreen(),
