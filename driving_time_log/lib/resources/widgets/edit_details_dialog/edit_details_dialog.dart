@@ -1,5 +1,4 @@
 import 'package:driving_time_log/main.dart';
-import 'package:driving_time_log/resources/assets.dart';
 import 'package:driving_time_log/resources/colors.dart';
 import 'package:driving_time_log/resources/date_functions.dart';
 import 'package:driving_time_log/resources/maps_Lists_enums.dart';
@@ -132,9 +131,9 @@ Future<dynamic> detailsDialog({
                   //       //TODO: normal keyboard
                   _DataEntry(text: 'Description', dataKey: 'description', textTheme: theme, data: data, last: true),
 
-                  //TODO: add remove log button here
                   //TODO: add deletion confirmation
                   //TODO: now clears the whole day make possible to clear only from the index pressed if in between things add ? box with th same time if last add on coing ? box
+                  //TODO: use inex to point to right one
                   IconButton(
                     icon: const Icon(
                       Icons.remove_circle,

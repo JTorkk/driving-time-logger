@@ -9,7 +9,7 @@ const logBox = 'logBox';
 
 void main() async {
   await Hive.initFlutter();
-
+  //TODO: think about changing to alzy box so memory can be saved
   await Hive.openBox<List>(logBox);
   //TODO: make typeadpater to support Iconbuttoenum
   await Hive.openBox<String>('buttonBox');
