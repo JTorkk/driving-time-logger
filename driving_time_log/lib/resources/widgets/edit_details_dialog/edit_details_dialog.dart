@@ -19,7 +19,8 @@ Future<dynamic> detailsDialog({
   //TODO: hide unneccesary field for every type
 }) {
   var _date = dateTimeToDDMMYYYY(date ?? DateTime.now());
-  var data = Hive.box<List>(log).get(_date)![index];
+  var box = Hive.box<List>(log);
+  var data = box.get(_date)![index];
 
   return showDialog(
     context: context,
@@ -194,6 +195,20 @@ Future<dynamic> detailsDialog({
                   _DataEntry(text: 'Description', dataKey: 'description', textTheme: theme, data: data, last: true),
 
                   //TODO: add remove log button here
+                  //TODO: add deletion confirmation
+                  //TODO: now clears the whole day make possible to clear only from the index pressed if in between things add ? box with th same time if last add on coing ? box
+                  IconButton(
+                    icon: const Icon(
+                      Icons.remove_circle,
+                    ),
+                    onPressed: () {
+                      box.delete(_date);
+                      Navigator.pop(context);
+
+                      // data.delete[index];
+                      print('deleted data from $_date');
+                    },
+                  )
                 ],
               ),
             );

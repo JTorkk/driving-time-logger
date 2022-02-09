@@ -27,6 +27,14 @@ Map<String, IconsAndNames> iconEnum = {
   'sleepAndBreak': IconsAndNames.sleepAndBreak,
 };
 
+Map<IconsAndNames, String> enumIcon = {
+  IconsAndNames.driving: 'driving',
+  IconsAndNames.otherWork: 'otherWork',
+  IconsAndNames.service: 'service',
+  IconsAndNames.out: 'out',
+  IconsAndNames.sleepAndBreak: 'sleepAndBreak',
+};
+
 //lists
 List<String> iconNames = [
   'driving',

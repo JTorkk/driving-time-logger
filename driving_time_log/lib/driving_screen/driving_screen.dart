@@ -17,6 +17,7 @@ class DrivingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context).textTheme;
+    var box = Hive.box<List>(log);
 
     return BlocProvider(
       create: (context) => DrivingCubit(),
@@ -159,12 +160,29 @@ class DrivingScreen extends StatelessWidget {
                         "Today's logs:",
                         style: theme.headline2,
                       ),
-                      //TODO: add  remove btton for test
+                      GestureDetector(
+                        onTap: () {
+                          //TODO: enable
+                          box.delete(dateTimeToDDMMYYYY(DateTime.now()));
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                            color: red,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(15),
+                            ),
+                          ),
+                          child: Text(
+                            'delete -',
+                            style: theme.bodyText1,
+                          ),
+                        ),
+                      ),
                       GestureDetector(
                         onTap: () {
                           //TODO: enable
                           // detailsDialog(context: context);
-                          var box = Hive.box<List>(log);
                           box.put(dateTimeToDDMMYYYY(DateTime.now()), testList);
                         },
                         child: Container(
