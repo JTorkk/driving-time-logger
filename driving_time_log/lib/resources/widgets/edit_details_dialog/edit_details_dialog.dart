@@ -4,6 +4,7 @@ import 'package:driving_time_log/resources/date_functions.dart';
 import 'package:driving_time_log/resources/maps_Lists_enums.dart';
 import 'package:driving_time_log/resources/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -33,117 +34,167 @@ Future<dynamic> detailsDialog({
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
               elevation: 16,
               backgroundColor: bgColor,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: accent,
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-                    ),
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            'cancel',
-                            style: theme.bodyText1?.copyWith(color: accentblue),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GestureDetector(
-                            onTap: () {
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: accent,
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                      ),
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextButton(
+                            onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: const BoxDecoration(
-                                color: accentblue, //TODO: cnahge color to greyish if nothing has chaged
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(15),
-                                ),
-                              ),
-                              child: Text(
-                                'Done',
-                                style: theme.bodyText1,
-                              ),
+                            child: Text(
+                              'cancel',
+                              style: theme.bodyText1?.copyWith(color: accentblue),
                             ),
                           ),
-                        )
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                  color: accentblue, //TODO: cnahge color to greyish if nothing has chaged
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(15),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Done',
+                                  style: theme.bodyText1,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                    padding: const EdgeInsets.only(bottom: 16),
-                    decoration: const BoxDecoration(
-                      border: Border(bottom: BorderSide(color: accent, width: 2)),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                      padding: const EdgeInsets.only(bottom: 16),
+                      decoration: const BoxDecoration(
+                        border: Border(bottom: BorderSide(color: accent, width: 2)),
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Type',
+                            style: theme.bodyText1,
+                          ),
+                          const SizedBox(width: 20),
+                          _TypeButton(type: 'driving', state: state),
+                          const SizedBox(width: 10),
+                          _TypeButton(type: 'service', state: state),
+                          const SizedBox(width: 10),
+                          _TypeButton(type: 'otherWork', state: state),
+                          const SizedBox(width: 10),
+                          _TypeButton(type: 'sleepAndBreak', state: state),
+                          const SizedBox(width: 10),
+                          _TypeButton(type: 'out', state: state),
+                        ],
+                      ),
                     ),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Type',
-                          style: theme.bodyText1,
-                        ),
-                        const SizedBox(width: 20),
-                        _TypeButton(type: 'driving', state: state),
-                        const SizedBox(width: 10),
-                        _TypeButton(type: 'service', state: state),
-                        const SizedBox(width: 10),
-                        _TypeButton(type: 'otherWork', state: state),
-                        const SizedBox(width: 10),
-                        _TypeButton(type: 'sleepAndBreak', state: state),
-                        const SizedBox(width: 10),
-                        _TypeButton(type: 'out', state: state),
-                      ],
+
+                    //TODO: custom keyboard to add : automatically
+                    //TODO: default to the current time if empty??
+                    _DataEntry(
+                      text: 'Start time',
+                      dataKey: 'startTime',
+                      textTheme: theme,
+                      data: data,
+                      keyboard: TextInputType.number,
+                      maxLenght: 4,
                     ),
-                  ),
 
-                  //TODO: custom keyboard to add : automatically
-                  //TODO: default to the current time if empty??
-                  _DataEntry(text: 'Start time', dataKey: 'startTime', textTheme: theme, data: data),
-
-                  //       //TODO: custom keyboard to add : automatically
-                  _DataEntry(text: 'End time', dataKey: 'endTime', textTheme: theme, data: data),
-
-                  if (data['type'] == 'driving')
-                    //       //TODO: number keyboard
-                    _DataEntry(text: 'Start km', dataKey: 'startKm', textTheme: theme, data: data),
-
-                  if (data['type'] == 'driving')
-                    //TODO: number keyboard
-                    _DataEntry(text: 'End km', dataKey: 'endKm', textTheme: theme, data: data),
-
-                  //TODO: no need to edit manually
-                  _DataEntry(
-                      text: 'Duration', dataKey: duration(data['startTime'], data['endTime']), textTheme: theme, data: data, desc: true),
-
-                  if (data['type'] == 'driving')
-                    //       //TODO: custom keyboard to add - automatically
-                    //         //TODO: why does this return null
-                    _DataEntry(text: 'Vehicle tag', dataKey: 'VehicleTag', textTheme: theme, data: data),
-
-                  //       //TODO: normal keyboard
-                  _DataEntry(text: 'Description', dataKey: 'description', textTheme: theme, data: data, last: true),
-
-                  //TODO: add deletion confirmation
-                  //TODO: now clears the whole day make possible to clear only from the index pressed if in between things add ? box with th same time if last add on coing ? box
-                  //TODO: use inex to point to right one
-                  IconButton(
-                    icon: const Icon(
-                      Icons.remove_circle,
+                    //       //TODO: custom keyboard to add : automatically
+                    _DataEntry(
+                      text: 'End time',
+                      dataKey: 'endTime',
+                      textTheme: theme,
+                      data: data,
+                      keyboard: TextInputType.number,
+                      maxLenght: 4,
                     ),
-                    onPressed: () {
-                      box.delete(_date);
-                      Navigator.pop(context);
-                    },
-                  )
-                ],
+
+                    if (data['type'] == 'driving')
+                      _DataEntry(
+                        text: 'Start km',
+                        dataKey: 'startKm',
+                        textTheme: theme,
+                        data: data,
+                        keyboard: TextInputType.number,
+                        maxLenght: 6,
+                      ),
+
+                    if (data['type'] == 'driving')
+                      _DataEntry(
+                        text: 'End km',
+                        dataKey: 'endKm',
+                        textTheme: theme,
+                        data: data,
+                        keyboard: TextInputType.number,
+                        maxLenght: 6,
+                      ),
+
+                    //TODO: no need to edit manually
+                    _DataEntry(
+                      text: 'Duration',
+                      dataKey: duration(data['startTime'], data['endTime']),
+                      textTheme: theme,
+                      data: data,
+                      desc: true,
+                      keyboard: TextInputType.none,
+                      maxLenght: 1,
+                      enabled: false,
+
+                      //TODO: disable
+                    ),
+
+                    if (data['type'] == 'driving')
+                      //       //TODO: custom keyboard to add - automatically first 3 normal keyboard and after - change to number
+                      //         //TODO: why does this return null
+                      _DataEntry(
+                        text: 'Vehicle tag',
+                        dataKey: 'VehicleTag',
+                        textTheme: theme,
+                        data: data,
+                        maxLenght: 6,
+                      ),
+
+                    _DataEntry(
+                      text: 'Description',
+                      dataKey: 'description',
+                      textTheme: theme,
+                      data: data,
+                      last: true,
+                      maxLenght: 120,
+                    ),
+
+                    //TODO: add deletion confirmation
+                    //TODO: now clears the whole day make possible to clear only from the index pressed if in between things add ? box with th same time if last add on coing ? box
+                    //TODO: use index to point to right one
+                    IconButton(
+                      icon: const Icon(
+                        Icons.remove_circle,
+                      ),
+                      onPressed: () {
+                        box.delete(_date);
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                ),
               ),
             );
           },
@@ -189,16 +240,22 @@ class _DataEntry extends StatelessWidget {
   final dynamic data;
   final bool last;
   final bool desc;
+  final TextInputType keyboard;
+  final int maxLenght;
+  final bool enabled;
   //TODO: add input type enum so right keyboard can be choosen
-  const _DataEntry(
-      {Key? key,
-      required this.text,
-      required this.dataKey,
-      required this.textTheme,
-      required this.data,
-      this.last = false,
-      this.desc = false})
-      : super(key: key);
+  const _DataEntry({
+    Key? key,
+    required this.text,
+    required this.dataKey,
+    required this.textTheme,
+    required this.data,
+    this.last = false,
+    this.desc = false,
+    this.keyboard = TextInputType.text,
+    required this.maxLenght,
+    this.enabled = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -223,9 +280,32 @@ class _DataEntry extends StatelessWidget {
             ),
           ),
           //TODO: !!maybe!! move to its own file and add cubit to handle text editing
-          Text(
-            desc ? dataKey : '${data[dataKey]}',
-            style: textTheme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
+          // Text(
+          //   desc ? dataKey : '${data[dataKey]}',
+          //   style: textTheme.bodyText1?.copyWith(color: white.withOpacity(0.5)),
+          // ),
+          SizedBox(
+            width: 120,
+            height: 20,
+            // constraints: const BoxConstraints(minWidth: 120, maxWidth: 140),
+            //TODO: add text contorller and variables for every input to state
+            //TODO: compate state variables to svaed  variables to determine if theere is changes
+            child: TextField(
+              enabled: enabled,
+              keyboardType: keyboard,
+              // maxLength: maxLenght,
+
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(maxLenght),
+              ],
+
+              // TODO: add input fomrattesr depending of the keyboard and maxlenght
+              // inputFormatters: [FilteringTextInputFormatter.deny(RegExp("[0-9]+"))],
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                labelText: '${data[dataKey]}',
+              ),
+            ),
           ),
         ],
       ),

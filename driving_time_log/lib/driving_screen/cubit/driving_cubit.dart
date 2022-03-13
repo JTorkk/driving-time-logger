@@ -29,7 +29,7 @@ class DrivingCubit extends Cubit<DrivingState> {
     var _testList = [_out];
 
     var _currentData = box.get(dateTimeToDDMMYYYY(DateTime.now()));
-
+    //TODO: add here chechk if last day has event and its end time is not set  set it to 23:59
     if (_currentData == null) {
       box.put(dateTimeToDDMMYYYY(DateTime.now()), _testList);
     } else {
