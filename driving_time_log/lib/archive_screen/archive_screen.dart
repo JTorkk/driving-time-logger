@@ -26,7 +26,7 @@ class ArchiveScreen extends StatelessWidget {
               child: Column(
                 children: [
                   TableCalendar(
-                    //TODO: runkkaa kalnterin fontit ja värit yms kuntoon
+                    //TODO: kato kalenterin fontit ja värit yms kuntoon
                     //TODO: when the aplication is first opened no day is focused
                     calendarStyle: CalendarStyle(
                       defaultTextStyle: theme.bodyText2!,
